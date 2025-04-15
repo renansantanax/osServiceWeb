@@ -25,11 +25,11 @@ export class NavbarComponent {
       this.nome = usuario.nome;
       this.perfis = usuario.perfis;
 
-      this.configurarMenu(this.perfis[0]); // usando o primeiro perfil
+      this.configurarMenu(this.perfis); // usando o primeiro perfil
     }
   }
 
-  configurarMenu(perfil: string) {
+  configurarMenu(perfis: string[]) {
     const baseMenu = [
       { label: 'Dashboard', icon: 'fas fa-home', route: '/dashboard' },
     ];
@@ -44,7 +44,7 @@ export class NavbarComponent {
       {
         label: 'Meus Chamados',
         icon: 'fas fa-wrench',
-        route: '/meus-chamados',
+        route: '/mytickets',
       },
       { label: 'Atividades', icon: 'fas fa-tasks', route: '/atividades' },
     ];
@@ -60,9 +60,34 @@ export class NavbarComponent {
 
     this.menuItems = [...baseMenu];
 
-    if (perfil === 'ADMIN') this.menuItems.push(...adminMenu);
-    else if (perfil === 'TECNICO') this.menuItems.push(...tecnicoMenu);
-    else if (perfil === 'CLIENTE') this.menuItems.push(...clienteMenu);
+    const addedRoutes = new Set<string>(); // evita itens duplicados
+
+    if (perfis.includes('ADMIN')) {
+      adminMenu.forEach((item) => {
+        if (!addedRoutes.has(item.route)) {
+          this.menuItems.push(item);
+          addedRoutes.add(item.route);
+        }
+      });
+    }
+
+    if (perfis.includes('TECNICO')) {
+      tecnicoMenu.forEach((item) => {
+        if (!addedRoutes.has(item.route)) {
+          this.menuItems.push(item);
+          addedRoutes.add(item.route);
+        }
+      });
+    }
+
+    if (perfis.includes('CLIENTE')) {
+      clienteMenu.forEach((item) => {
+        if (!addedRoutes.has(item.route)) {
+          this.menuItems.push(item);
+          addedRoutes.add(item.route);
+        }
+      });
+    }
 
     // Logout (sempre)
     this.menuItems.push({

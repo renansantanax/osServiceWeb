@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/pages/dashboard/dashboard.compo
 import { AuthGuard } from './guards/auth.guard';
 import { TicketComponent } from './components/pages/ticket/ticket.component';
 import { MyticketsComponent } from './components/pages/mytickets/mytickets.component';
+import { TicketDetailComponent } from './components/pages/ticket-detail/ticket-detail.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,11 @@ export const routes: Routes = [
   {
     path: 'mytickets',
     component: MyticketsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'ticket/:id',
+    component: TicketDetailComponent,
     canActivate: [AuthGuard],
   },
   {
