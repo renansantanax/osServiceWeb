@@ -1,0 +1,97 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
+@Component({
+  selector: 'app-navbar',
+  imports: [CommonModule, RouterModule],
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.css',
+})
+export class NavbarComponent {
+  collapsed = false;
+  nome = '';
+  perfis: string[] = [];
+  menuItems: any[] = [];
+  logado = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    const data = sessionStorage.getItem('usuario');
+    if (data) {
+      this.logado = true;
+      const usuario = JSON.parse(data);
+      this.nome = usuario.nome;
+      this.perfis = usuario.perfis;
+
+      this.configurarMenu(this.perfis[0]); // usando o primeiro perfil
+    }
+  }
+
+  configurarMenu(perfil: string) {
+    const baseMenu = [
+      { label: 'Dashboard', icon: 'fas fa-home', route: '/dashboard' },
+    ];
+
+    const adminMenu = [
+      { label: 'Usuários', icon: 'fas fa-users', route: '/usuarios' },
+      { label: 'Todos os Chamados', icon: 'fas fa-list', route: '/chamados' },
+      { label: 'Opções', icon: 'fas fa-cog', route: '/configuracoes' },
+    ];
+
+    const tecnicoMenu = [
+      {
+        label: 'Meus Chamados',
+        icon: 'fas fa-wrench',
+        route: '/meus-chamados',
+      },
+      { label: 'Atividades', icon: 'fas fa-tasks', route: '/atividades' },
+    ];
+
+    const clienteMenu = [
+      { label: 'Abrir Chamado', icon: 'fas fa-plus', route: '/abrir-chamado' },
+      {
+        label: 'Meus Chamados',
+        icon: 'fas fa-ticket-alt',
+        route: '/meus-chamados',
+      },
+    ];
+
+    this.menuItems = [...baseMenu];
+
+    if (perfil === 'ADMIN') this.menuItems.push(...adminMenu);
+    else if (perfil === 'TECNICO') this.menuItems.push(...tecnicoMenu);
+    else if (perfil === 'CLIENTE') this.menuItems.push(...clienteMenu);
+
+    // Logout (sempre)
+    this.menuItems.push({
+      label: 'Logout',
+      icon: 'fas fa-sign-out-alt',
+      route: '#',
+      action: () => this.logout(),
+    });
+  }
+
+  toggleSidebar() {
+    this.collapsed = !this.collapsed;
+  }
+
+  logout() {
+    Swal.fire({
+      title: 'Tem certeza que deseja sair?',
+      text: 'Você não poderá reverter essa ação!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sim, sair!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sessionStorage.removeItem('usuario');
+        this.router.navigateByUrl('/login');
+      }
+    });
+  }
+}
