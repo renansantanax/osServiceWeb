@@ -36,7 +36,7 @@ export class NavbarComponent {
 
     const adminMenu = [
       { label: 'Usuários', icon: 'fas fa-users', route: '/usuarios' },
-      { label: 'Todos os Chamados', icon: 'fas fa-list', route: '/chamados' },
+      { label: 'Todos os Chamados', icon: 'fas fa-list', route: '/alltickets' },
       { label: 'Opções', icon: 'fas fa-cog', route: '/configuracoes' },
     ];
 
@@ -50,11 +50,11 @@ export class NavbarComponent {
     ];
 
     const clienteMenu = [
-      { label: 'Abrir Chamado', icon: 'fas fa-plus', route: '/abrir-chamado' },
+      { label: 'Abrir Chamado', icon: 'fas fa-plus', route: '/ticket' },
       {
         label: 'Meus Chamados',
         icon: 'fas fa-ticket-alt',
-        route: '/meus-chamados',
+        route: '/mytickets',
       },
     ];
 

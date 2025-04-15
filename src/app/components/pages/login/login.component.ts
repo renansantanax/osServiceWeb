@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { endpoints } from '../../../configurations/environments';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -21,7 +22,11 @@ export class LoginComponent {
   erros: any = null;
 
   //CONSTRUCTOR INIT FOR HTTP CLIENT
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -32,10 +37,14 @@ export class LoginComponent {
   onSubmit() {
     this.mensagem = '';
     this.erros = null;
-
     this.http.post(endpoints.auth_usuario, this.form.value).subscribe({
       next: (data: any) => {
         sessionStorage.setItem('usuario', JSON.stringify(data));
+        this.toastr.success('Usuário logado com sucesso!', '', {
+          progressBar: true,
+          timeOut: 4000,
+          positionClass: 'toast-bottom-right',
+        });
         this.router.navigateByUrl('/dashboard');
       },
       error: (e: any) => {
