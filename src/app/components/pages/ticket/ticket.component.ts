@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import {
   FormControl,
   FormGroup,
@@ -23,7 +24,7 @@ export class TicketComponent {
 
   ngOnInit() {}
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   form = new FormGroup({
     titulo: new FormControl('', Validators.required),
@@ -51,13 +52,28 @@ export class TicketComponent {
 
           //zerar os formulário
           this.form.reset();
+          this.toastr.success('Chamado enviado com sucesso!', '', {
+            progressBar: true,
+            timeOut: 4000,
+            positionClass: 'toast-bottom-right',
+          });
         },
         error: (e) => {
           // se a requisição falhar
           try {
-            this.erros = typeof e.error === 'string' ? JSON.parse(e.error) : e.error;
+            this.erros =
+              typeof e.error === 'string' ? JSON.parse(e.error) : e.error;
+            this.toastr.warning('Preencha todos os campos!', '', {
+              progressBar: false,
+              timeOut: 3000,
+              closeButton: true,
+              tapToDismiss: false,
+              positionClass: 'toast-top-right',
+            });
           } catch {
-            this.erros = { error: 'Erro inesperado ao processar resposta do servidor.' };
+            this.erros = {
+              error: 'Erro inesperado ao processar resposta do servidor.',
+            };
           }
           this.mensagem = '';
         },
