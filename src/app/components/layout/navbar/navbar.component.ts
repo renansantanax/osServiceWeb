@@ -35,9 +35,9 @@ export class NavbarComponent {
     ];
 
     const adminMenu = [
-      { label: 'Usuários', icon: 'fas fa-users', route: '/usuarios' },
+      { label: 'Usuários', icon: 'fas fa-users', route: '/users' },
       { label: 'Todos os Chamados', icon: 'fas fa-list', route: '/alltickets' },
-      { label: 'Opções', icon: 'fas fa-cog', route: '/configuracoes' },
+      { label: 'Opções', icon: 'fas fa-cog', route: '/settings' },
     ];
 
     const tecnicoMenu = [
@@ -46,7 +46,7 @@ export class NavbarComponent {
         icon: 'fas fa-wrench',
         route: '/mytickets',
       },
-      { label: 'Atividades', icon: 'fas fa-tasks', route: '/atividades' },
+      { label: 'Atividades', icon: 'fas fa-tasks', route: '/activity' },
     ];
 
     const clienteMenu = [

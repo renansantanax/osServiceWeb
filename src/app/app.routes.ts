@@ -6,6 +6,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { TicketComponent } from './components/pages/ticket/ticket.component';
 import { MyticketsComponent } from './components/pages/mytickets/mytickets.component';
 import { TicketDetailComponent } from './components/pages/ticket-detail/ticket-detail.component';
+import { UsersComponent } from './components/pages/users/users.component';
+import { AllticketsComponent } from './components/pages/alltickets/alltickets.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +37,16 @@ export const routes: Routes = [
   {
     path: 'ticket/:id',
     component: TicketDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'alltickets',
+    component: AllticketsComponent,
     canActivate: [AuthGuard],
   },
   {

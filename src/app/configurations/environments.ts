@@ -10,10 +10,15 @@ export const endpoints = {
   obter_chamado: (id: number | string | number) =>
     `${osservice}/api/chamados/obter/${id}`,
   encerrar_chamado: `${osservice}/api/chamados/encerrar`,
-  criar_usuario: `${osservice}/api/usuario/criar`,
-  auth_usuario: `${osservice}/api/usuario/autenticar`,
   listar_mensagem: (id: number | string | number) =>
     `${osservice}/api/chamados/${id}/mensagens/listar`,
   enviar_mensagem: (id: number | string | number) =>
     `${osservice}/api/chamados/${id}/mensagens/enviar`,
+  listar_todos: `${osservice}/api/chamados/consultar`,
+  listar_por_status: `${osservice}/api/chamados/consultar/status`,
+
+  criar_usuario: `${osservice}/api/usuario/criar`,
+  auth_usuario: `${osservice}/api/usuario/autenticar`,
+  listar_usuarios: `${osservice}/api/usuario/listar`,
+  
 };
