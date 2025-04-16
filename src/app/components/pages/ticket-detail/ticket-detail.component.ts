@@ -10,6 +10,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -27,10 +28,11 @@ export class TicketDetailComponent {
 
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
+  private toastr = inject(ToastrService);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    const data = sessionStorage.getItem('usuario');
+    const data = localStorage.getItem('usuario');
 
     if (data) {
       this.usuario = JSON.parse(data);
@@ -79,7 +81,11 @@ export class TicketDetailComponent {
     };
 
     this.http.put(endpoints.atualizar_chamado(payload.id!), payload).subscribe(() => {
-      console.log('Chamado atualizado com sucesso!');
+      this.toastr.success('Chamado atualizado com sucesso!', '', {
+        progressBar: true,
+        timeOut: 4000,
+        positionClass: 'toast-top-right',
+      });
     });
   }
 

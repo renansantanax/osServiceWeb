@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { endpoints } from '../../../configurations/environments';
-import { RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -12,7 +12,7 @@ import { RouterModule} from '@angular/router';
 })
 export class UsersComponent implements OnInit {
   usuarios: any[] = [];
-
+  erros: any[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
         this.usuarios = data as any[];
       },
       error: (e) => {
-        console.log(e);
+        this.erros = e;
       },
     });
   }

@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class MyticketsComponent {
   chamados: any[] = [];
-
+  erros: any[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class MyticketsComponent {
         console.log(data);
       },
       error: (e) => {
-        console.log(e);
+        this.erros = e;
       },
     });
   }

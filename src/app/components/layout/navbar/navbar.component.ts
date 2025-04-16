@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterModule],
@@ -15,10 +16,10 @@ export class NavbarComponent {
   menuItems: any[] = [];
   logado = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    const data = sessionStorage.getItem('usuario');
+    const data = localStorage.getItem('usuario');
     if (data) {
       this.logado = true;
       const usuario = JSON.parse(data);
@@ -114,9 +115,24 @@ export class NavbarComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        sessionStorage.removeItem('usuario');
-        this.router.navigateByUrl('/login');
+        // 🟢 Pega o refreshToken do localStorage
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        const refreshToken = usuario.refreshToken;
+  
+        // 🟡 Faz requisição para logout (revoga o token no backend)
+        this.authService.logoutComToken(refreshToken).subscribe({
+          next: () => {
+            localStorage.removeItem('usuario');
+            this.router.navigateByUrl('/login');
+          },
+          error: () => {
+            // mesmo que falhe, limpa o storage e redireciona
+            localStorage.removeItem('usuario');
+            this.router.navigateByUrl('/login');
+          }
+        });
       }
     });
   }
+  
 }

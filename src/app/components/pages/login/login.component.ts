@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import { endpoints } from '../../../configurations/environments';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+
 @Component({
   selector: 'app-login',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -25,7 +27,8 @@ export class LoginComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   form = new FormGroup({
@@ -39,19 +42,17 @@ export class LoginComponent {
     this.erros = null;
     this.http.post(endpoints.auth_usuario, this.form.value).subscribe({
       next: (data: any) => {
-        sessionStorage.setItem('usuario', JSON.stringify(data));
+        this.authService.setUsuario(data);
         this.toastr.success('Usuário logado com sucesso!', '', {
           progressBar: true,
           timeOut: 4000,
-          positionClass: 'toast-bottom-right',
+          positionClass: 'toast-top-right',
         });
         this.router.navigateByUrl('/dashboard');
       },
       error: (e: any) => {
         this.mensagem = typeof e.error === 'string' ? e.error : '';
-        console.log(this.mensagem + 'aaaa');
         this.erros = typeof e.error !== 'string' ? e.error : null;
-        console.log(this.erros);
       },
     });
   }

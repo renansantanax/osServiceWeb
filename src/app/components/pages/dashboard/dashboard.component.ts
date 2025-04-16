@@ -53,7 +53,7 @@ export class DashboardComponent {
 
   carregarEstatisticas() {
     this.http.get<any[]>(endpoints.listar_por_status).subscribe((data) => {
-      const labels = data.map((d) => d.status);
+      const labels = data.map((d) => this.formatarStatus(d.status));
       const valores = data.map((d) => d.qtdChamados);
     
       this.pieChartLabels = labels;
@@ -83,4 +83,13 @@ export class DashboardComponent {
   extrairQuantidadePorStatus(data: any[], status: string): number {
     return data.find((d) => d.status === status)?.qtdChamados || 0;
   }
+
+  formatarStatus(status: string): string {
+    return status
+      .toLowerCase()
+      .replace(/_/g, ' ') // troca underscores por espaços
+      .replace(/\b\w/g, (letra) => letra.toUpperCase()); // capitaliza cada palavra
+  }
+
+
 }

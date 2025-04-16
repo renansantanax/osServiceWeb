@@ -25,6 +25,6 @@ export class AppComponent {
   }
 
   get isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('usuario');
+    return !!localStorage.getItem('usuario');
   }
 }

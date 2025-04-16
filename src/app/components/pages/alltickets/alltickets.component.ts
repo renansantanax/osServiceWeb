@@ -11,17 +11,16 @@ import { endpoints } from '../../../configurations/environments';
 })
 export class AllticketsComponent implements OnInit {
   chamados: any[] = [];
-
+  erros: any[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.http.get(`${endpoints.listar_todos}`).subscribe({
       next: (data) => {
-        console.log(data);
         this.chamados = data as any[];
       },
       error: (e) => {
-        console.log(e);
+        this.erros = e;
       },
     });
   }
@@ -43,7 +42,4 @@ export class AllticketsComponent implements OnInit {
     };
     return tipo;
   }
-
-
-  
 }

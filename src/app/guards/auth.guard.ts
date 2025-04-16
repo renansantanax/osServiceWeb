@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     //consultar os dados do usuário gravado na session storage
-    const usuario = sessionStorage.getItem('usuario');
+    const usuario = localStorage.getItem('usuario');
     //verificando se não existe um usuário autenticado
     if (!usuario) {
       //redirecionar de volta para a página de login

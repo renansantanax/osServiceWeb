@@ -8,11 +8,13 @@ import { MyticketsComponent } from './components/pages/mytickets/mytickets.compo
 import { TicketDetailComponent } from './components/pages/ticket-detail/ticket-detail.component';
 import { UsersComponent } from './components/pages/users/users.component';
 import { AllticketsComponent } from './components/pages/alltickets/alltickets.component';
+import { ReverseAuthGuard } from './guards/reverse-auth.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [ReverseAuthGuard]
   },
   {
     path: 'register',
@@ -60,9 +62,8 @@ export const routes: Routes = [
     data: { animation: 'Registro' },
   },
   {
-    // Rota padrão
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'login',
+    component: DashboardComponent, // ou DashboardComponent
+    canActivate: [AuthGuard],
   },
 ];

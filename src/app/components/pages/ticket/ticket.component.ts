@@ -33,8 +33,6 @@ export class TicketComponent {
   });
 
   onSubmit() {
-    console.log(`dados enviados: ${this.form.value.tipoChamado}`);
-
     // fazendo a requisição POST para API
     this.http
       .post(`${endpoints.criar_chamado}`, this.form.value, {
@@ -83,5 +81,4 @@ export class TicketComponent {
   cleanForm() {
     this.form.reset();
   }
-
 }
