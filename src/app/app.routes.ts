@@ -23,16 +23,19 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'DashboardPage' },
   },
   {
     path: 'ticket',
     component: TicketComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'ChamadosPage' },
   },
   {
     path: 'mytickets',
     component: MyticketsComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'MeusChamadosPage' },
   },
   {
     path: 'ticket/:id',
@@ -48,6 +51,13 @@ export const routes: Routes = [
     path: 'alltickets',
     component: AllticketsComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'TodosChamadosPage' },
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [AuthGuard],
+    data: { animation: 'Registro' },
   },
   {
     // Rota padrão

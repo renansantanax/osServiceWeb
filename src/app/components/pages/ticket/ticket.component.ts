@@ -79,4 +79,9 @@ export class TicketComponent {
         },
       });
   }
+
+  cleanForm() {
+    this.form.reset();
+  }
+
 }
