@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { endpoints } from '../../../configurations/environments';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ticket-detail',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.css',
 })
@@ -25,6 +26,7 @@ export class TicketDetailComponent {
   mensagens: any[] = [];
   usuario: any;
   perfil: string = '';
+  anexos: any[] = [];
 
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
@@ -53,6 +55,7 @@ export class TicketDetailComponent {
         this.form.get('status')?.enable();
       }
       this.carregarMensagens();
+      this.carregarAnexos();
     });
   }
 
@@ -108,6 +111,43 @@ export class TicketDetailComponent {
       .subscribe((novaMensagem: any) => {
         this.mensagens.push(novaMensagem);
         this.formMensagem.reset();
+      });
+  }
+
+  carregarAnexos(): void {
+    this.http.get<any[]>(endpoints.listar_anexos(this.chamado.id)).subscribe({
+      next: (res) => {
+        this.anexos = res;
+      },
+      error: () => {
+        this.toastr.warning('Não foi possível carregar os anexos.');
+      },
+    });
+  }
+
+  baixarAnexo(anexo: any): void {
+    this.http
+      .get(endpoints.download_anexo(anexo.id), {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .subscribe({
+        next: (res) => {
+          const blob = new Blob([res.body!], {
+            type: res.headers.get('Content-Type')!,
+          });
+          const url = window.URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = anexo.nome; // nome original do anexo
+          a.click();
+
+          window.URL.revokeObjectURL(url); // limpeza
+        },
+        error: (err) => {
+          console.error('Erro ao baixar anexo:', err);
+        },
       });
   }
 }

@@ -15,7 +15,7 @@ export class AllticketsComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get(`${endpoints.consultar_todos}`).subscribe({
+    this.http.get(`${endpoints.consultar}`).subscribe({
       next: (data) => {
         this.chamados = data as any[];
       },

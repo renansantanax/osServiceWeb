@@ -104,7 +104,7 @@ export class DashboardComponent {
   verificarEndpoints() {
     if (this.perfis.includes('ADMIN')) {
       this.endpointEstatistica = endpoints.dashboard;
-      this.endpointChamadosRecentes = endpoints.consultar_todos;
+      this.endpointChamadosRecentes = endpoints.consultar;
     } else if (this.perfis.includes('TECNICO')) {
       this.endpointEstatistica = endpoints.dashboard;
       this.endpointChamadosRecentes = endpoints.listar_por_perfil;

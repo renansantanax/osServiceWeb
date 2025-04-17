@@ -19,7 +19,6 @@ export class MyticketsComponent {
     this.http.get(`${endpoints.listar_por_perfil}`).subscribe({
       next: (data) => {
         this.chamados = data as any[];
-        console.log(data);
       },
       error: (e) => {
         this.erros = e;
