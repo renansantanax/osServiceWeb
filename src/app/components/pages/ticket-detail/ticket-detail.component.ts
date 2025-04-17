@@ -46,7 +46,7 @@ export class TicketDetailComponent {
         titulo: chamado.titulo,
         descricao: chamado.descricao,
         tipoChamado: chamado.tipoChamado,
-        status: chamado.status
+        status: chamado.status,
       });
 
       if (this.ehTecnico) {
@@ -54,7 +54,6 @@ export class TicketDetailComponent {
       }
       this.carregarMensagens();
     });
-
   }
 
   get ehTecnico(): boolean {
@@ -70,29 +69,33 @@ export class TicketDetailComponent {
     });
 
     this.formMensagem = new FormGroup({
-      conteudo: new FormControl('', Validators.required)
+      conteudo: new FormControl('', Validators.required),
     });
   }
 
   atualizarChamado(): void {
     const payload = {
       ...this.form.getRawValue(),
-      id: this.chamado.id
+      id: this.chamado.id,
     };
 
-    this.http.put(endpoints.atualizar_chamado(payload.id!), payload).subscribe(() => {
-      this.toastr.success('Chamado atualizado com sucesso!', '', {
-        progressBar: true,
-        timeOut: 4000,
-        positionClass: 'toast-top-right',
+    this.http
+      .put(endpoints.atualizar_chamado(payload.id!), payload)
+      .subscribe(() => {
+        this.toastr.success('Chamado atualizado com sucesso!', '', {
+          progressBar: true,
+          timeOut: 4000,
+          positionClass: 'toast-top-right',
+        });
       });
-    });
   }
 
   carregarMensagens(): void {
-    this.http.get(endpoints.listar_mensagem(this.chamado.id)).subscribe((res: any) => {
-      this.mensagens = res;
-    });
+    this.http
+      .get(endpoints.listar_mensagem(this.chamado.id))
+      .subscribe((res: any) => {
+        this.mensagens = res;
+      });
   }
 
   enviarMensagem(): void {
@@ -100,9 +103,11 @@ export class TicketDetailComponent {
 
     const conteudo = this.formMensagem.value.conteudo;
 
-    this.http.post(endpoints.enviar_mensagem(this.chamado.id), { conteudo }).subscribe((novaMensagem: any) => {
-      this.mensagens.push(novaMensagem);
-      this.formMensagem.reset();
-    });
+    this.http
+      .post(endpoints.enviar_mensagem(this.chamado.id), { conteudo })
+      .subscribe((novaMensagem: any) => {
+        this.mensagens.push(novaMensagem);
+        this.formMensagem.reset();
+      });
   }
 }

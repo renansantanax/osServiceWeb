@@ -43,7 +43,7 @@ export class NavbarComponent {
 
     const tecnicoMenu = [
       {
-        label: 'Meus Chamados',
+        label: 'Chamados',
         icon: 'fas fa-wrench',
         route: '/mytickets',
       },

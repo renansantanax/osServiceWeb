@@ -16,7 +16,7 @@ export class MyticketsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get(`${endpoints.listar_chamado}`).subscribe({
+    this.http.get(`${endpoints.listar_por_perfil}`).subscribe({
       next: (data) => {
         this.chamados = data as any[];
         console.log(data);

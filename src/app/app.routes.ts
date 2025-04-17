@@ -9,12 +9,13 @@ import { TicketDetailComponent } from './components/pages/ticket-detail/ticket-d
 import { UsersComponent } from './components/pages/users/users.component';
 import { AllticketsComponent } from './components/pages/alltickets/alltickets.component';
 import { ReverseAuthGuard } from './guards/reverse-auth.guard';
+import { SettingsComponent } from './components/pages/settings/settings.component';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [ReverseAuthGuard]
+    canActivate: [ReverseAuthGuard],
   },
   {
     path: 'register',
@@ -26,6 +27,12 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     data: { animation: 'DashboardPage' },
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [AuthGuard],
+    data: { animation: 'SettingsPage' },
   },
   {
     path: 'ticket',

@@ -1,0 +1,36 @@
+<div class="max-w-4xl mx-auto mt-12 p-8 bg-white dark:bg-zinc-900 rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-100 mb-2">⚙️ Configurações</h2>
+  <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+    Personalize sua experiência no sistema.
+  </p>
+
+  <!-- Tema -->
+  <div class="flex justify-between items-center border-t pt-4 mt-4">
+    <span class="text-zinc-700 dark:text-zinc-300 font-medium">🌗 Tema Escuro</span>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" class="sr-only peer" [checked]="themeService.isDark()" (change)="alternarTema()" />
+      <div class="w-11 h-6 bg-gray-300 peer-checked:bg-blue-600 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 transition-all duration-300"></div>
+      <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-5 transition-transform"></div>
+    </label>
+  </div>
+
+  <!-- Idioma -->
+  <div class="flex justify-between items-center mt-6 border-t pt-4">
+    <span class="text-zinc-700 dark:text-zinc-300 font-medium">🌐 Idioma</span>
+    <select >
+      class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-700 rounded px-3 py-1 outline-none">
+      <option value="pt">Português</option>
+      <option value="en">Inglês</option>
+    </select>
+  </div>
+
+  <!-- Notificações -->
+  <div class="flex justify-between items-center mt-6 border-t pt-4">
+    <span class="text-zinc-700 dark:text-zinc-300 font-medium">🔔 Notificações</span>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" class="sr-only peer"  />
+      <div class="w-11 h-6 bg-gray-300 peer-checked:bg-emerald-500 rounded-full peer peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 transition-all duration-300"></div>
+      <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-5 transition-transform"></div>
+    </label>
+  </div>
+</div>

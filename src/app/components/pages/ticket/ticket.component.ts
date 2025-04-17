@@ -13,6 +13,7 @@ import { endpoints } from '../../../configurations/environments';
 
 @Component({
   selector: 'app-ticket',
+  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './ticket.component.html',
   styleUrl: './ticket.component.css',
@@ -21,8 +22,7 @@ export class TicketComponent {
   tipos: any[] = [];
   erros: any = null;
   mensagem: string = '';
-
-  ngOnInit() {}
+  arquivosSelecionados: File[] = [];
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
@@ -32,52 +32,79 @@ export class TicketComponent {
     tipoChamado: new FormControl('', Validators.required),
   });
 
+  ngOnInit() {}
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.arquivosSelecionados = Array.from(input.files);
+    }
+  }
+
   onSubmit() {
-    // fazendo a requisição POST para API
+    const chamadoPayload = {
+      titulo: this.form.value.titulo,
+      descricao: this.form.value.descricao,
+      tipoChamado: this.form.value.tipoChamado,
+    };
+
+    // Primeiro: cria o chamado
     this.http
-      .post(`${endpoints.criar_chamado}`, this.form.value, {
-        responseType: 'text',
-      })
+      .post<any>(`${endpoints.criar_chamado}`, chamadoPayload)
       .subscribe({
-        //aguardando o retorno da API
-        next: (data) => {
-          // se a req for bem sucedida
-          //limpar o erros
-          this.erros = null;
+        next: (res) => {
+          const chamadoId = res.id;
 
-          //capturar a msg de sucesso da api
-          this.mensagem = data;
+          // Segundo: se houver arquivos, envia os anexos
+          if (this.arquivosSelecionados.length > 0) {
+            const formData = new FormData();
+            this.arquivosSelecionados.forEach((arquivo) => {
+              formData.append('arquivos', arquivo);
+            });
 
-          //zerar os formulário
-          this.form.reset();
-          this.toastr.success('Chamado enviado com sucesso!', '', {
+            this.http
+              .post(`${endpoints.upload_anexo(chamadoId!)}`, formData)
+              .subscribe({
+                next: () => {
+                  this.toastr.success('Chamado criado com anexos!', '', {
+                    progressBar: true,
+                    timeOut: 4000,
+                    positionClass: 'toast-bottom-right',
+                  });
+                  this.form.reset();
+                  this.arquivosSelecionados = [];
+                },
+                error: () => {
+                  this.toastr.error(
+                    'Chamado criado, mas falha ao enviar anexos.',
+                    '',
+                    {
+                      progressBar: true,
+                      timeOut: 4000,
+                      positionClass: 'toast-bottom-right',
+                    }
+                  );
+                },
+              });
+          } else {
+            // Se não tem arquivos
+            this.toastr.success('Chamado criado com sucesso!', '', {
+              progressBar: true,
+              timeOut: 4000,
+              positionClass: 'toast-bottom-right',
+            });
+            this.form.reset();
+          }
+        },
+        error: () => {
+          this.toastr.error('Erro ao criar chamado.', '', {
             progressBar: true,
             timeOut: 4000,
             positionClass: 'toast-bottom-right',
           });
         },
-        error: (e) => {
-          // se a requisição falhar
-          try {
-            this.erros =
-              typeof e.error === 'string' ? JSON.parse(e.error) : e.error;
-            this.toastr.warning('Preencha todos os campos!', '', {
-              progressBar: false,
-              timeOut: 3000,
-              closeButton: true,
-              tapToDismiss: false,
-              positionClass: 'toast-top-right',
-            });
-          } catch {
-            this.erros = {
-              error: 'Erro inesperado ao processar resposta do servidor.',
-            };
-          }
-          this.mensagem = '';
-        },
       });
   }
-
   cleanForm() {
     this.form.reset();
   }

@@ -63,8 +63,14 @@
         <label for="anexos" class="block text-sm font-medium text-gray-700">Anexos</label>
         <div class="mt-2 flex items-center justify-between border-2 border-dashed border-gray-300 rounded-md px-4 py-6 text-center">
           <span class="text-gray-500 text-sm">Arraste e solte arquivos ou clique no botão abaixo</span>
-          <input type="file" id="anexos" name="anexos" multiple class="hidden" />
+          <input type="file" id="anexos" name="anexos" multiple class="hidden" (change)="onFileChange($event)" />
           <label for="anexos" class="cursor-pointer mt-2 inline-block px-4 py-2 bg-gray-200 text-sm text-gray-700 rounded-md hover:bg-gray-300">Procurar</label>
+        </div>
+        <div class="mt-2 text-sm text-gray-600" *ngIf="arquivosSelecionados.length > 0">
+          <p class="mb-1">Arquivos selecionados:</p>
+          <ul>
+            <li *ngFor="let file of arquivosSelecionados">{{ file.name }}</li>
+          </ul>
         </div>
       </div>
 
